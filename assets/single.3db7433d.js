@@ -1,0 +1,1 @@
+import{s as e}from"./index.ae9b1950.js";/* empty css              */e.setup=function(){createCanvas(800,600)};e.draw=function(){background(100),fill(255,0,0),noStroke(),rectMode(CENTER),rect(mouseX,mouseY,50,50)};e.mousePressed=function(){console.log("here")};
