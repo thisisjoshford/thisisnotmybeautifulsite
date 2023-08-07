@@ -1,8 +1,15 @@
-import { defineConfig } from 'vite'
-import { svelte } from '@sveltejs/vite-plugin-svelte'
+// vite.config.js
+const { resolve } = require('path')
+const { defineConfig } = require('vite')
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [svelte()],
-  base: '/thisisjoshford.github.io'
+module.exports = defineConfig({
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        single: resolve(__dirname, 'single_sketch.html'),
+        multi: resolve(__dirname, 'multi_sketch.html')
+      }
+    }
+  }
 })

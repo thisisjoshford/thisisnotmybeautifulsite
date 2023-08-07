@@ -1,47 +1,141 @@
-# Svelte + Vite
+# P5.js-vite Starter Template 🚀
 
-This template should help get you started developing with Svelte in Vite.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-## Recommended IDE Setup
+[Vite](https://vitejs.dev/) starter template to scaffold a new [p5.js](https://p5js.org) project.
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
+This is an unopinionated template; aside from P5.js and Vite, the rest of your project's tools are entirely up to you.
 
-## Need an official Svelte framework?
+## Live demo
 
-Check out [SvelteKit](https://github.com/sveltejs/kit#readme), which is also powered by Vite. Deploy anywhere with its serverless-first approach and adapt to various platforms, with out of the box support for TypeScript, SCSS, and Less, and easily-added support for mdsvex, GraphQL, PostCSS, Tailwind CSS, and more.
+For a live demo please [visit this page](https://p5js-vite-demo.surge.sh).
 
-## Technical considerations
+## Installation
 
-**Why use this over SvelteKit?**
+Pull the template files with [degit](https://github.com/Rich-Harris/degit) and install dependencies.
 
-- It brings its own routing solution which might not be preferable for some users.
-- It is first and foremost a framework that just happens to use Vite under the hood, not a Vite app.
+```
+npx degit makinteract/p5js-vite my-project
 
-This template contains as little as possible to get started with Vite + Svelte, while taking into account the developer experience with regards to HMR and intellisense. It demonstrates capabilities on par with the other `create-vite` templates and is a good starting point for beginners dipping their toes into a Vite + Svelte project.
+cd my-project
+npm install
+npm run dev
+```
 
-Should you later need the extended capabilities and extensibility provided by SvelteKit, the template has been structured similarly to SvelteKit so that it is easy to migrate.
+## npm scripts
 
-**Why `global.d.ts` instead of `compilerOptions.types` inside `jsconfig.json` or `tsconfig.json`?**
+- `npm run dev` - Starts the development server at port [3000](http://localhost:3000/)
+- `npm run build` - Builds the application in a `dist` folder
+- `npm run preview` - Serves the build files (`dist` folder) locally at port [5000](http://localhost:3000/)
 
-Setting `compilerOptions.types` shuts out all other types not explicitly listed in the configuration. Using triple-slash references keeps the default TypeScript setting of accepting type information from the entire workspace, while also adding `svelte` and `vite/client` type information.
+Note that if after this last command you do not see anything, you can use instead this other command:
 
-**Why include `.vscode/extensions.json`?**
+- `npm run preview --host` - You should then be able to see your files locally at port [5000](http://localhost:3000/)
 
-Other templates indirectly recommend extensions via the README, but this file allows VS Code to prompt the user to install the recommended extension upon opening the project.
-
-**Why enable `checkJs` in the JS template?**
-
-It is likely that most cases of changing variable types in runtime are likely to be accidental, rather than deliberate. This provides advanced typechecking out of the box. Should you like to take advantage of the dynamically-typed nature of JavaScript, it is trivial to change the configuration.
-
-**Why is HMR not preserving my local component state?**
-
-HMR state preservation comes with a number of gotchas! It has been disabled by default in both `svelte-hmr` and `@sveltejs/vite-plugin-svelte` due to its often surprising behavior. You can read the details [here](https://github.com/sveltejs/svelte-hmr/tree/master/packages/svelte-hmr#preservation-of-local-state).
-
-If you have state that's important to retain within a component, consider creating an external store which would not be replaced by HMR.
+## A single p5.js sketch
 
 ```js
-// store.js
-// An extremely simple external store
-import { writable } from 'svelte/store'
-export default writable(0)
+import '../css/style.css';
+import { sketch } from 'p5js-wrapper';
+
+sketch.setup = function () {
+  createCanvas(800, 600);
+};
+
+sketch.draw = function () {
+  background(127); // grey
+  fill(255, 0, 0); // red
+  noStroke();
+  rectMode(CENTER);
+  rect(width / 2, height / 2, 50, 50);
+};
+
+sketch.mousePressed = function () {
+  console.log(`I am here at ${mouseX}:${mouseY}`);
+};
 ```
+
+And here the body of the html file:
+
+```html
+<body>
+  <script type="module" src="/src/single_sketch.js"></script>
+</body>
+```
+
+## Multiple p5.js sketches
+
+If you want to use multiple sketches, you need to use a different syntax.
+
+```js
+import '../css/style.css';
+import { p5 } from 'p5js-wrapper';
+
+let sketch1 = new p5((p) => {
+  p.setup = () => {
+    const one = document.getElementById('one');
+    p.createCanvas(one.clientWidth, one.clientHeight);
+  };
+
+  p.draw = () => {
+    p.background(100);
+  };
+}, 'one');
+
+// Sketch2
+let sketch2 = new p5((p) => {
+  p.setup = () => {
+    const two = document.getElementById('two');
+    p.createCanvas(two.clientWidth, two.clientHeight);
+  };
+
+  p.draw = () => {
+    p.background(170);
+  };
+}, 'two');
+```
+
+This file is expecting two divs in the html file:
+
+```html
+<body>
+  <script type="module" src="/src/multi_sketch.js"></script>
+  <div id="one"></div>
+  <div id="two"></div>
+</body>
+```
+
+## Adding sound
+
+Sound is an [experimental feature](https://github.com/makinteract/p5js-wrapper/blob/main/README_SOUND.md).
+
+Examples usage:
+
+```js
+import { sketch } from 'p5js-wrapper';
+import 'p5js-wrapper/sound';
+
+import mysound from './mysound.mp3';
+
+let soundEffect;
+
+sketch.setup = function () {
+  createCanvas(100, 100);
+  soundEffect = loadSound(mysound);
+};
+
+sketch.draw = function () {
+  background('#eeeeee');
+};
+
+// Play sound on click
+sketch.mousePressed = function () {
+  soundEffect.play();
+};
+```
+
+This example assumes you have a file _mysound.mp3_ in the _src_ folder.
+
+## License
+
+This project is open source and available under the [MIT License](LICENSE).

@@ -1,16 +1,15 @@
 {
-  "name": "thisisnotmybeautifulsite",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "name": "p5js-vite",
+  "version": "0.1.0",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^2.4.2",
-    "svelte": "^4.0.5",
-    "vite": "^4.4.5"
+    "vite": "^2.7.2"
+  },
+  "dependencies": {
+    "p5js-wrapper": "^1.2.3"
   }
 }
